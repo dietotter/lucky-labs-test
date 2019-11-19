@@ -1,0 +1,11 @@
+# built project
+dist/
+
+# node modules
+node_modules/
+
+# webstorm
+.idea
+
+# mac
+.DS_Store
