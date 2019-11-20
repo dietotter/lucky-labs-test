@@ -4,16 +4,17 @@ import { CONFIG } from '../constants'
 const { BULLET_SPEED } = CONFIG
 
 export class Bullet extends Graphics {
-    constructor(x, y, stage, bullets) {
+    constructor(x, y, bullets) {
         super()
 
-        // reference stage and bullet list
-        this.stage = stage
+        // reference bullet list
         this.bullets = bullets
+        // set radius
+        this.radius = 16
 
         // set position
         this.beginFill(0x66ff00)
-        this.drawCircle(0, 0, 16)
+        this.drawCircle(0, 0, this.radius)
         this.endFill()
         this.x = x
         this.y = y
@@ -21,14 +22,19 @@ export class Bullet extends Graphics {
     }
 
     update() {
+        // movement
         this.y += this.vy
+
         // if bullet went off the screen, destroy it
         if (this.y < -15) {
-            this.destroy()
+            this.removeItself()
+            return true
         }
+
+        return false
     }
 
-    destroy(stage) {
+    removeItself() {
         // remove bullets from array to dereference them
         this.bullets.forEach((bullet, i) => {
             if (bullet === this) {
@@ -36,7 +42,7 @@ export class Bullet extends Graphics {
             }
         })
 
-        // remove child from stage
-        this.stage.removeChild(this)
+        // destroy sprite
+        this.destroy()
     }
 }

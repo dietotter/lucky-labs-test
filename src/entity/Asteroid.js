@@ -4,11 +4,10 @@ import { CONFIG } from '../constants'
 const { APP_WIDTH } = CONFIG
 
 export class Asteroid extends Sprite {
-    constructor(texture, playerZone, stage, asteroids) {
+    constructor(texture, playerZone, asteroids) {
         super(texture)
 
-        // reference stage and asteroid list
-        this.stage = stage
+        // reference asteroid list
         this.asteroids = asteroids
         // set the right and lower boundary
         this.rightBound = APP_WIDTH - this.width
@@ -22,9 +21,11 @@ export class Asteroid extends Sprite {
     }
 
     update() {
+        // movement
         this.x += this.vx
         this.y += this.vy
 
+        // canvas bounds collision checking
         this.checkForBoundsCollision()
     }
 
@@ -40,7 +41,7 @@ export class Asteroid extends Sprite {
         }
     }
 
-    destroy(stage) {
+    removeItself() {
         // remove asteroid from array to dereference it
         this.asteroids.forEach((asteroid, i) => {
             if (asteroid === this) {
@@ -49,6 +50,6 @@ export class Asteroid extends Sprite {
         })
 
         // remove child from stage
-        this.stage.removeChild(this)
+        this.destroy()
     }
 }
