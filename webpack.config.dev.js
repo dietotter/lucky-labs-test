@@ -1,7 +1,7 @@
-'use strict';
-
 const webpack = require('webpack')
 const path = require('path')
+const HTMLWebpackPlugin = require('html-webpack-plugin')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 
 module.exports = {
 
@@ -11,13 +11,12 @@ module.exports = {
         ]
     },
 
-    devtool: 'cheap-source-map',
-
-    output: {
-        filename: '[name].bundle.js',
-    },
-
     mode: 'development',
+
+    devServer: {
+        contentBase: 'dist',
+        port: 3000
+    },
 
     module: {
         rules: [
@@ -37,7 +36,16 @@ module.exports = {
         new webpack.DefinePlugin({
             'CANVAS_RENDERER': JSON.stringify(true),
             'WEBGL_RENDERER': JSON.stringify(true)
-        })
-    ]
+        }),
+        new HTMLWebpackPlugin({
+            template: 'index.html',
+            filename: 'index.html'
+        }),
+        new CopyWebpackPlugin([{
+            from: 'assets',
+            to: 'assets'
+        }]),
+    ],
 
-};
+    devtool: 'cheap-source-map',
+}
